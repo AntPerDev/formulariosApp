@@ -1,10 +1,12 @@
-<h2>Template: Básicos</h2>
+<h2>Template: <small>Básicos</small>
+</h2>
 <hr>
 
 <div class="row">
   <div class="col">
 
-    <form (ngSubmit)="guardar( miFormulario )"
+    <!-- <form (ngSubmit)="guardar( miFormulario )" -->
+    <form (ngSubmit)="guardar()"
            #miFormulario="ngForm"
            autocomplete="off">
 
@@ -15,7 +17,7 @@
 
           <input  type="text"
                   class="form-control"
-                  ngModel
+                  [ngModel]="initForm.producto"
                   name="producto"
                   placeholder="Nombre del producto"
                   required
@@ -23,9 +25,8 @@
           >
 
           <span class="form-text text-danger"
-                *ngIf="miFormulario.controls.producto?.invalid &&
-                       miFormulario.controls.producto?.touched" >
-            Debe ser de tres letras
+                *ngIf="nombreValido()" >
+                 Debe ser de tres letras
           </span>
         </div>
       </div>
@@ -36,12 +37,17 @@
         <div class="col-sm-9">
           <input  type="number"
                   class="form-control"
-                  ngModel
+                  [ngModel]="initForm.precio"
                   name="precio"
                   placeholder="Precio del producto"
                   required
                   min="0"
           >
+
+          <span class="form-text text-danger"
+                *ngIf="precioValido()" >
+                Debe ser cero o mayor que cero
+          </span>
         </div>
       </div>
 
@@ -52,8 +58,10 @@
         <div class="col-sm-9">
           <input  type="number"
                   class="form-control"
-                  ngModel
+                  [ngModel]="initForm.existencias"
                   name="existencias"
+                  customMin
+                  [minimo]=0
                   placeholder="Existencias del producto"
                   required
 
@@ -64,6 +72,7 @@
       <div class="row">
         <div class="col">
           <button type="submit"
+                  [disabled]="miFormulario.invalid"
                   class ="btn btn-primary float-end" >
             Guardar
           </button>
@@ -98,6 +107,11 @@
     <span>Valor</span>
     <pre>
       {{ miFormulario.value | json }}
+    </pre>
+
+    <span>CustomDirective</span>
+    <pre>
+      {{ miFormulario.controls.existencias?.errors | json }}
     </pre>
 
   </div>
